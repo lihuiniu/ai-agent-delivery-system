@@ -3,7 +3,38 @@
 ## Full Sequence Diagram
 ```mermaid
 sequenceDiagram
-    [PASTE THE DIAGRAM CODE FROM ABOVE]
+    participant User
+    participant Frontend
+    participant APIM
+    participant AgentService
+    participant Redis
+    participant OpenAI
+    participant ServiceBus
+    participant ActionDispatcher
+    participant BackendServices
+    participant MetricsDB
+
+    User->>Frontend: Sends message
+    Frontend->>APIM: POST /chat (with AAD token)
+    APIM->>AgentService: Forward request
+    AgentService->>Redis: Get config/history
+    AgentService->>OpenAI: Stream request
+    OpenAI-->>AgentService: Stream tokens
+    AgentService-->>APIM: Stream response
+    APIM-->>Frontend: Stream tokens
+    Frontend-->>User: Display tokens
+
+    alt Action Required
+        AgentService->>ServiceBus: Publish action
+        ServiceBus->>ActionDispatcher: Consume
+        ActionDispatcher->>BackendServices: Execute
+        BackendServices-->>ActionDispatcher: Result
+        ActionDispatcher->>MetricsDB: Record
+        ActionDispatcher-->>AgentService: Feedback (optional)
+    end
+
+    AgentService->>Redis: Update history
+    AgentService->>MetricsDB: Record eval metrics
 ```
 
 ## Key Phases
