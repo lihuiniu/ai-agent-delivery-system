@@ -1,0 +1,22 @@
+{{- if and .Values.istio.enabled .Values.istio.install.enabled }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "agent-service.fullname" . }}-istio-installer
+  annotations:
+    "helm.sh/hook": pre-install,pre-upgrade
+    "helm.sh/hook-weight": "-5"
+spec:
+  template:
+    spec:
+      serviceAccountName: istio-installer
+      containers:
+      - name: istioctl
+        image: istio/istioctl:{{ .Values.istio.install.version }}
+        command: ["/bin/sh", "-c"]
+        args:
+          - >
+            istioctl install -y --set profile=demo &&
+            kubectl wait --for=condition=ready pod -l app=istiod -n istio-system --timeout=300s
+      restartPolicy: Never
+{{- end }}

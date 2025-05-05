@@ -1,0 +1,27 @@
+%% docs/diagrams/auth_workflow.mmd
+sequenceDiagram
+    autonumber
+    actor User
+    participant Client
+    participant AAD as "Azure AD"
+    participant APIG as "API Gateway"
+    participant Agent
+    participant Backend
+
+    User->>Client: Initiates request
+    Client->>AAD: 1. Request token (client credentials)
+    AAD-->>Client: 2. Returns JWT
+    Client->>APIG: 3. API call (Authorization: Bearer {JWT})
+    APIG->>AAD: 4. Validate token
+    AAD-->>APIG: 5. Validation response
+    alt Valid token
+        APIG->>Agent: 6. Forward request (X-User-Id:{sub})
+        Agent->>Backend: 7. Authorized action (X-User-Id)
+        Backend-->>Agent: 8. Action result
+        Agent-->>APIG: 9. Response
+        APIG-->>Client: 10. Return data
+        Client-->>User: Display result
+    else Invalid token
+        APIG-->>Client: 401 Unauthorized
+        Client-->>User: Show error
+    end

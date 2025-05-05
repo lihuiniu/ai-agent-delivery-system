@@ -1,0 +1,11 @@
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "agent-service.fullname" . }}-pdb
+  labels:
+    {{- include "agent-service.labels" . | nindent 4 }}
+spec:
+  minAvailable: 70%
+  selector:
+    matchLabels:
+      {{- include "agent-service.selectorLabels" . | nindent 6 }}

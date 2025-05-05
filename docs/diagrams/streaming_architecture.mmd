@@ -1,0 +1,13 @@
+%% docs/diagrams/streaming_architecture.mmd
+flowchart TD
+    subgraph Streaming Architecture
+        A[FastAPI] -->|Native streaming| B[Token-by-token]
+        C[AKS with HPA] -->|Auto-scales| D[10k+ connections]
+        E[API Gateway] -->|Manages| F[WebSocket/Long-poll]
+        G[Redis] -->|Sub-millisecond| H[Conversation state]
+    end
+
+    style A fill:#FF5733,stroke:#333
+    style C fill:#3386FF,stroke:#333
+    style E fill:#33FF57,stroke:#333
+    style G fill:#F633FF,stroke:#333
