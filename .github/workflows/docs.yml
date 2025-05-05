@@ -1,0 +1,6 @@
+- name: Generate diagrams
+  uses: lukeoliff/mermaid-action@v1
+  with:
+    input: docs/diagrams
+    output: docs/images
+    format: png

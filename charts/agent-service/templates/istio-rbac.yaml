@@ -1,0 +1,31 @@
+{{- if and .Values.istio.enabled .Values.istio.install.enabled }}
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: istio-installer
+  namespace: {{ .Release.Namespace }}
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: istio-installer-role
+rules:
+- apiGroups: [""]
+  resources: ["*"]
+  verbs: ["*"]
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: istio-installer-binding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: istio-installer-role
+subjects:
+- kind: ServiceAccount
+  name: istio-installer
+  namespace: {{ .Release.Namespace }}
+{{- end }}

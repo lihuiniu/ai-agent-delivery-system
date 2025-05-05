@@ -1,0 +1,23 @@
+%% docs/diagrams/architecture.mmd
+flowchart TD
+    subgraph Azure Cloud
+        A[Client] -->|HTTPS| B[Azure API Gateway]
+        B -->|mTLS| C[Istio Ingress]
+        C --> D[Agent Service Pod]
+        
+        subgraph AKS Cluster
+            D --> E[Redis Cache]
+            D --> F[Service Bus]
+            E -->|Storage| G[(Azure Disk)]
+            F --> H[Action Dispatcher]
+        end
+        
+        H --> I[Backend Services]
+    end
+
+    style A fill:#007fff,color:white
+    style B fill:#0070C0
+    style C fill:#4b32c3,color:white
+    style D fill:#00b294
+    style E fill:#ff0000,color:white
+    style F fill:#ff6600

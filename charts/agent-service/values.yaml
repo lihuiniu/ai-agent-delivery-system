@@ -1,0 +1,75 @@
+# charts/agent-service/values.yaml
+replicaCount: 3
+image:
+  repository: myacr.azurecr.io/agent-service
+  tag: latest
+  pullPolicy: IfNotPresent
+# Service Configuration
+service:
+  type: ClusterIP
+  port: 8000
+  targetPort: 8000
+  annotations: {}
+resources:
+  limits:
+    cpu: 1000m
+    memory: 512Mi
+  requests:
+    cpu: 500m
+    memory: 256Mi
+# Ingress Configuration
+ingress:
+  enabled: true
+  className: "azure-application-gateway"
+  annotations:
+    appgw.ingress.kubernetes.io/ssl-redirect: "true"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+  hosts:
+    - host: agents.yourdomain.com
+      paths:
+        - path: /
+          pathType: Prefix
+  tls:
+    - secretName: agent-service-tls
+      hosts:
+        - agents.yourdomain.com
+autoscaling:
+  enabled: true
+  minReplicas: 3
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 70
+  targetMemoryUtilizationPercentage: 70
+redis:
+  host: "ai-agents-redis.redis.cache.windows.net"
+  port: 6380
+  architecture: standalone
+  ssl: true
+  auth:
+    password: "" # Set via --set
+  resources:
+    requests:
+      memory: 256Mi
+      cpu: 100m
+    limits:
+      memory: 1Gi
+      cpu: 500m
+
+istio:
+  enabled: false
+  # Auto-installs Istio if not present (requires cluster admin)
+  install: 
+    enabled: false
+    version: "1.18.2"
+    values: {}
+  # Gateway configuration
+  gateway:
+    enabled: true
+    hosts: ["agents.yourdomain.com"]
+    # Istio ingress gateway service name
+    ingressGateway: "istio-ingressgateway"
+  # VirtualService settings
+  virtualService:
+    timeout: "30s"
+    retries:
+      attempts: 3
+      perTryTimeout: "10s"

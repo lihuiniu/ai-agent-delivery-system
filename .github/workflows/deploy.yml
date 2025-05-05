@@ -1,0 +1,102 @@
+# .github/workflows/deploy.yml
+name: Deploy AI Agent Service
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+      - feature/*
+    paths:
+      - 'agent-service/**'
+      - 'charts/**'
+
+env:
+  ACR_NAME: myacr
+  RESOURCE_GROUP: ai-agents-rg
+  CLUSTER_NAME: ai-agents-aks
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.9'
+    
+    - name: Install dependencies
+      run: |
+        pip install -r agent-service/requirements.txt
+        
+    - name: Run unit tests
+      run: |
+        cd agent-service
+        pytest
+        
+    - name: Run offline evaluations
+      run: |
+        python agent-service/evaluate.py --offline --agent-version ${{ github.sha }}
+        
+    - name: Build and push Docker image
+      if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev'
+      uses: azure/docker-login@v1
+      with:
+        login-server: ${{ env.ACR_NAME }}.azurecr.io
+        username: ${{ secrets.ACR_USERNAME }}
+        password: ${{ secrets.ACR_PASSWORD }}
+        
+    - name: Build and push
+      if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev'
+      run: |
+        docker build -t ${{ env.ACR_NAME }}.azurecr.io/agent-service:${{ github.sha }} ./agent-service
+        docker push ${{ env.ACR_NAME }}.azurecr.io/agent-service:${{ github.sha }}
+        
+  deploy:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Download artifact from Azure DevOps
+      uses: azure/pipelines-artifact-download@v1
+      with:
+        project: 'AI Agents'
+        definition: ${{ secrets.AZURE_DEVOPS_BUILD_DEFINITION }}
+        artifactName: 'helm-charts'
+        pat: ${{ secrets.AZURE_DEVOPS_PAT }}
+        
+    - name: Deploy to AKS
+      uses: azure/aks-set-context@v1
+      with:
+        resource-group: ${{ env.RESOURCE_GROUP }}
+        cluster-name: ${{ env.CLUSTER_NAME }}
+        
+    - name: Install Helm chart
+      run: |
+        helm upgrade --install agent-service ./charts/agent-service \
+          --namespace ai-agents \
+          --set image.tag=${{ github.sha }} \
+          --set redis.host=${{ secrets.REDIS_HOST }} \
+          --set redis.password=${{ secrets.REDIS_PASSWORD }} \
+          --wait
+        
+    - name: Run canary tests
+      if: github.ref == 'refs/heads/main'
+      run: |
+        # Run integration tests against canary deployment
+        python tests/canary_tests.py
+        
+    - name: Promote to production
+      if: github.ref == 'refs/heads/main' && success()
+      run: |
+        # Update production deployment
+        helm upgrade --install agent-service-prod ./charts/agent-service \
+          --namespace production \
+          --set image.tag=${{ github.sha }} \
+          --set replicaCount=5 \
+          --set redis.host=${{ secrets.REDIS_HOST_PROD }} \
+          --set redis.password=${{ secrets.REDIS_PASSWORD_PROD }} \
+          --wait
