@@ -1,0 +1,14 @@
+{
+  "theme_change": {
+    "message": "Switch the interface to dark mode",
+    "conversation_id": "conv_theme_123"
+  },
+  "notification_update": {
+    "message": "Turn on email notifications but disable push",
+    "conversation_id": "conv_notif_456"
+  },
+  "mixed_request": {
+    "message": "Make it dark mode and enable all notifications",
+    "conversation_id": "conv_mixed_789"
+  }
+}

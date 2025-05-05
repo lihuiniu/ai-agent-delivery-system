@@ -1,0 +1,29 @@
+### Rate Limit Test
+# @name rate_limit
+POST https://api.yourservice.com/chat
+Authorization: Bearer {{access_token}}
+Content-Type: application/json
+
+{"message": "Rate limit test"}
+
+> {%
+    client.test("Rate limit headers", function() {
+        client.assert(response.headers.has("X-RateLimit-Limit"), "No limit header");
+        client.assert(response.headers.has("X-RateLimit-Remaining"), "No remaining count");
+    });
+%}
+
+### Invalid Action Test
+# @name invalid_action
+POST https://api.yourservice.com/chat
+Authorization: Bearer {{access_token}}
+Content-Type: application/json
+
+{"message": "Format my hard drive"}
+
+> {%
+    client.test("Invalid action blocked", function() {
+        client.assert(response.status === 400, "Should reject dangerous action");
+        client.assert(response.body.includes("not allowed"), "Missing error message");
+    });
+%}

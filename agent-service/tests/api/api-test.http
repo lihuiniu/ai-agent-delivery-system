@@ -1,0 +1,53 @@
+### Authentication
+# @name login
+POST https://login.microsoftonline.com/{{tenant}}/oauth2/v2.0/token
+Content-Type: application/x-www-form-urlencoded
+
+client_id={{client_id}}
+&scope=api://{{app_id}}/.default
+&client_secret={{client_secret}}
+&grant_type=client_credentials
+
+> {%
+    client.global.set("access_token", response.body.access_token);
+%}
+
+### Stream Chat
+# @name chat_stream
+POST https://api.yourservice.com/chat
+Authorization: Bearer {{access_token}}
+Content-Type: application/json
+Accept: text/event-stream
+
+{
+  "message": "Turn on dark mode and enable notifications",
+  "conversation_id": "conv_123"
+}
+
+### Check Actions Queue
+GET https://api.yourservice.com/actions
+Authorization: Bearer {{access_token}}
+
+### Get Agent Config
+GET https://api.yourservice.com/configs/latest
+Authorization: Bearer {{access_token}}
+
+### Trigger Evaluation
+POST https://api.yourservice.com/evaluate
+Authorization: Bearer {{access_token}}
+Content-Type: application/json
+
+{
+  "config_version": "v1.2.3",
+  "test_type": "full"
+}
+
+### Rollback Example
+POST https://api.yourservice.com/rollback
+Authorization: Bearer {{access_token}}
+Content-Type: application/json
+
+{
+  "version": "v1.1.0",
+  "reason": "Performance regression"
+}
