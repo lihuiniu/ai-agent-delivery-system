@@ -29,7 +29,7 @@ flowchart TD
     OFF -->|Baseline Metrics| ON
     ON -->|Anomaly Detection| VERSION
     VERSION -->|Hotfix| OFF
-	
+```
    
 ## 1. Process Flow Diagram
 ```mermaid
@@ -52,7 +52,7 @@ flowchart TD
     style B fill:#3498db,stroke:#333
     style C fill:#e74c3c,stroke:#333
     style D fill:#f39c12,stroke:#333
-	
+```
 	
 ## 2. Timeline View
 ```mermaid
@@ -68,7 +68,8 @@ gantt
     section Versioning
     Config V1        :2023-10-01, 7d
     Config V2        :2023-10-08, 7d
-	
+```
+
 ## 3. Comparison Matrix
 ```mermaid
 classDiagram
@@ -98,7 +99,8 @@ classDiagram
     EvaluationStrategy <|-- OfflineEvaluation
     EvaluationStrategy <|-- OnlineEvaluation
     VersionControl --* EvaluationStrategy : tracks
-	
+```
+
 ## 4. Metric Tracking Dashboard
 ```mermaid
 pie
@@ -108,7 +110,8 @@ pie
     "User Satisfaction" : 20
     "Error Rate" : 15
     "Throughput" : 5
-	
+```
+
 ## 5. Full Strategy Visualization
 ```mermaid
 flowchart LR
@@ -134,7 +137,8 @@ flowchart LR
     style Offline fill:#e3f2fd,stroke:#2196f3
     style Online fill:#e8f5e9,stroke:#4caf50
     style Versioning fill:#fff3e0,stroke:#ff9800
-	
+```
+
 ### 5.1 Offline Evaluation
 ```mermaid
 pie
@@ -143,7 +147,8 @@ pie
     "Integration Tests" : 30
     "Scenario Validation" : 20
     "Performance Benchmarks" : 15
-	
+```
+
 
 #### Python Example test automation
 def run_offline_eval(config):
@@ -163,13 +168,15 @@ gantt
     Release to 5% Users :active, 2023-11-01, 2d
     section Full Rollout
     Monitor All Users :2023-11-03, 5d5
+```
+
 ### 5.3  Versioned Configs
 ```mermaid
 erDiagram
     CONFIG ||--o{ VERSION : has
     VERSION ||--o{ DEPLOYMENT : used_in
     DEPLOYMENT ||--o{ METRICS : generates
-	
+```
 
 ## 6. Implementation Guide
 ### Setup Monitoring
@@ -199,6 +206,7 @@ flowchart LR
     Anomaly --> Diagnosis
     Diagnosis --> Fix
     Fix --> NewBaseline
+```
 
 ## 8. Visual Summary
 ```mermaid
@@ -213,14 +221,16 @@ journey
     section Maintenance
       Bisect: 4: DevOps
       Rollback: 3: Automated
-	
+```
+
 ## 9. Troubleshooting
 ```mermaid
 graph LR
     Problem --> Detect --> Analyze --> Fix --> Verify
     style Problem stroke:#f44336
     style Verify stroke:#4caf50
-	
+```
+
 
 		
 	

@@ -21,7 +21,8 @@ sequenceDiagram
     APIM-->>Frontend: Stream tokens
     Frontend-->>User: Display tokens
     AgentService->>ServiceBus: Queue actions (if any)
-	
+```
+
 ## Configuration Update Flow
 
 ```mermaid
@@ -35,7 +36,7 @@ flowchart TD
     F --> G{Metrics met?}
     G -->|Yes| H[Full rollout]
     G -->|No| I[Rollback]
-	
+```
 	
 ## Configuration Update Flow
 

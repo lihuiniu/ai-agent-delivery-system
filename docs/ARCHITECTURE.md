@@ -29,7 +29,8 @@ flowchart TD
     class A,B,I azure
     class C,D,H k8s
     class E,F,G,J data
-	
+```
+
 ## Component Flow Details
 ## Component Sequence
 - [Request Lifecycle](./flows/request_lifecycle.md)
@@ -44,7 +45,8 @@ sequenceDiagram
     AgentService->>OpenAI: API Call
     OpenAI-->>AgentService: Stream Response
     AgentService-->>Client: Return Tokens
-	
+```
+
 ## Data Relationships
 - [Data Relationships](./flows/data_relationships.md)
 ```mermaid
@@ -64,6 +66,7 @@ erDiagram
         string id PK
         string model_type
     }
+```
 
 ## Network Topology
 ```mermaid
@@ -87,7 +90,8 @@ graph LR
         Redis
         ServiceBus
     end
-	
+```
+
 ## Key Metrics
 ```mermaid
 pie
@@ -96,7 +100,7 @@ pie
     "Memory" : 30
     "Storage" : 15
     "Network" : 10
-
+```
 
 ## Key Decisions
 
