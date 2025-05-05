@@ -1,0 +1,73 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36" version="26.2.14">
+  <diagram name="AI Agent Delivery System" id="aiAgentSystem">
+    <mxGraphModel dx="1000" dy="597" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="user" value="User" style="shape=actor;verticalLabelPosition=bottom;verticalAlign=top;" parent="1" vertex="1">
+          <mxGeometry x="40" y="40" width="30" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="chatUI" value="Chat UI (App Service)" style="shape=rectangle;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="140" y="40" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="signalR" value="SignalR (Streaming)" style="shape=rectangle;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="140" y="120" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="apiGateway" value="API Gateway (Azure API Mgmt)" style="shape=rectangle;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="340" y="40" width="180" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="agentExec" value="Agent Execution (Azure Functions)" style="shape=rectangle;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="340" y="120" width="180" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="agentConfig" value="Agent Config (Functions)" style="shape=rectangle;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="540" y="120" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="cosmosDB" value="Azure Cosmos DB" style="shape=cylinder;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="730" y="100" width="90" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="openAI" value="Azure OpenAI" style="shape=rectangle;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="540" y="200" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="aad" value="Azure AD B2C (Auth)" style="shape=rectangle;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="340" y="200" width="180" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="notifySvc" value="Notification Setting Service" style="shape=rectangle;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="140" y="200" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="appearanceSvc" value="Appearance Service" style="shape=rectangle;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="570" y="40" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="arrow1" style="endArrow=block;" parent="1" source="user" target="chatUI" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="arrow2" style="endArrow=block;" parent="1" source="chatUI" target="signalR" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="arrow3" style="endArrow=block;" parent="1" source="chatUI" target="apiGateway" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="arrow4" style="endArrow=block;" parent="1" source="apiGateway" target="agentExec" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="arrow5" style="endArrow=block;" parent="1" source="agentExec" target="agentConfig" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="arrow6" style="endArrow=block;" parent="1" source="agentConfig" target="cosmosDB" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="arrow7" style="endArrow=block;" parent="1" source="agentExec" target="openAI" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="arrow8" style="endArrow=block;" parent="1" source="agentExec" target="aad" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="arrow9" style="endArrow=block;" parent="1" source="agentExec" target="notifySvc" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="arrow10" style="endArrow=block;" parent="1" source="agentExec" target="appearanceSvc" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
