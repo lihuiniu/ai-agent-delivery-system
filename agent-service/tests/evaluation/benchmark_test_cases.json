@@ -1,0 +1,12 @@
+[
+  {
+    "input": "Enable dark mode",
+    "expected_actions": ["switch_theme"],
+    "max_response_time": 2000
+  },
+  {
+    "input": "Change notifications",
+    "expected_actions": ["change_notification_settings"],
+    "response_quality_threshold": 0.9
+  }
+]

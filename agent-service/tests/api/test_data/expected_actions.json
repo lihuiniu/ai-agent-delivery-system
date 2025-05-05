@@ -1,0 +1,10 @@
+{
+  "theme_dark": {
+    "action_type": "switch_theme",
+    "expected_params": {"theme": "dark"}
+  },
+  "notif_enable_email": {
+    "action_type": "change_notification_settings",
+    "expected_params": {"email_enabled": true}
+  }
+}
